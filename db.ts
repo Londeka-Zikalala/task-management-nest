@@ -1,5 +1,5 @@
-import pgPromise from 'pg-promise';
-import dotenv from 'dotenv';
+import * as pgPromise from 'pg-promise';
+import * as dotenv from 'dotenv';
 dotenv.config();
 
 const pgp = pgPromise();
