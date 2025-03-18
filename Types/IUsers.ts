@@ -21,3 +21,7 @@ export interface UsersRoutes{
     loginUser(req:Request,res:Response,next:NextFunction): Promise<void> ;
     viewTasksByUser(req:Request,res:Response,next:NextFunction): Promise<any>;
 }
+
+export interface LoginResponse {
+    accessToken: string;
+  }

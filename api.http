@@ -1,0 +1,34 @@
+# Register a new user
+POST http://localhost:3011/register
+Content-Type: application/json
+
+{
+    "username":"Test3",
+    "password":"Password2"
+}
+
+# Login to get the token
+POST http://localhost:3011/login
+Content-Type: application/json
+
+{
+    "username":"Test2",
+    "password":"Password2"
+}
+
+# Add a task 
+POST http://localhost:3011/tasks
+Content-Type: application/json
+Authorization: Bearer 
+
+{
+  "title": "Finish Project",
+  "description": "Complete all API endpoints",
+  "due_date": "2024-11-30"
+}
+
+# Fetch tasks 
+GET http://localhost:3011/2/tasks
+Content-Type: application/json
+Authorization: Bearer 
+

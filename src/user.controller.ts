@@ -1,7 +1,8 @@
-import { Controller, Post, Body, Get, Param } from '@nestjs/common';
-import { AppService } from './app.service';
+import { Controller, Post, Body, Get, Param, UseGuards } from '@nestjs/common';
+import { AppService } from './user.service';
 import { Tasks } from 'Types/ITasks';
-import { Users } from 'Types/IUsers';
+import { AuthGuard } from '@nestjs/passport';
+import { LoginResponse } from 'Types/IUsers';
 
 @Controller()
 export class AppController {
@@ -13,14 +14,14 @@ export class AppController {
   }
 
   @Post('login')
-  async loginUser(@Body('username') username: string, @Body('password') password: string): Promise<Users | null> {
+  async loginUser(@Body('username') username: string, @Body('password') password: string): Promise<LoginResponse | null> {
     return this.appService.userLogin(username, password);
   }
- 
+
+  @UseGuards(AuthGuard('jwt'))
   @Get(':id/tasks')
   async getUserTasks(@Param('id') id: number): Promise<Tasks[]> {
     return this.appService.viewUserTasks(id);
   }
-
 }
 
