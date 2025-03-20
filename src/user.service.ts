@@ -46,7 +46,7 @@ export class AppService {
             const payload = { username: user.username, sub: user.id };
             const accessToken = this.jwtService.sign(payload);
             console.log('Generated Access Token:', accessToken);
-            return { accessToken };
+            return { ... payload, accessToken };
            }    
         
       }catch(error){
