@@ -11,11 +11,11 @@ async function bootstrap() {
 
 
 
-app.use((req, res, next) => {
-    res.removeHeader("Cross-Origin-Opener-Policy");
-    res.removeHeader("Cross-Origin-Embedder-Policy");
-    next();
-});
+// app.use((req, res, next) => {
+//     res.removeHeader("Cross-Origin-Opener-Policy");
+//     res.removeHeader("Cross-Origin-Embedder-Policy");
+//     next();
+// });
   await app.listen(process.env.PORT ?? 3011);
 }
 bootstrap();
