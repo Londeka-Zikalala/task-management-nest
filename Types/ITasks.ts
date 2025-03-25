@@ -10,6 +10,6 @@ export interface Tasks{
 export interface TasksCrud{
     createTask(user_id: number, title:string , description:string, due_date:Date, status:boolean):Promise<string>,
     updateTask(title:string):Promise<string>,
-    deleteTask(title:string):Promise<string>,
+    deleteTask(id:number):Promise<string>,
 
 }

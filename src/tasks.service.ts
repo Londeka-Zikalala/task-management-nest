@@ -56,9 +56,9 @@ export class TaskService implements TasksCrud {
   }
 
   // Function to delete a task based on title
-  async deleteTask(title: string): Promise<string> {
+  async deleteTask(id: number): Promise<string> {
     try {
-      await this.db.none(`DELETE FROM tasks WHERE title = $1`, [title]);
+      await this.db.none(`DELETE FROM tasks WHERE title = $1`, [id]);
       return 'Task deleted!';
     } catch (error) {
       console.error('Error deleting task:', error);
