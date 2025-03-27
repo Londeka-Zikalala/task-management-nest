@@ -2,6 +2,7 @@ import { Controller, Post, Patch, Delete, Body, UseGuards, HttpException, HttpSt
 import { TaskService } from './tasks.service';
 import { JwtAuthGuard } from './Auth/jwt-auth.guard';
 import { JwtService } from '@nestjs/jwt';
+import { Tasks } from 'Types/ITasks';
 
 @Controller('tasks')
 export class TasksController {
@@ -52,13 +53,13 @@ export class TasksController {
 
   @UseGuards(JwtAuthGuard)
   @Patch('update')
-  async updateTaskStatus(@Body('title') title: string): Promise<string> {
-    return this.taskService.updateTask(title);
+  async updateTaskStatus(@Body() tasks:Tasks): Promise<string> {
+    return this.taskService.updateTask(tasks.id);
   }
 
   @UseGuards(JwtAuthGuard)
   @Delete('delete')
-  async deleteTask(@Body('id') id: number): Promise<string> {
-    return this.taskService.deleteTask(id);
+  async deleteTask(@Body() tasks:Tasks): Promise<string> {
+    return this.taskService.deleteTask(tasks.id);
   }
 }

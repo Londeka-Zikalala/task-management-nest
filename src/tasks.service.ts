@@ -4,14 +4,12 @@ import { TasksCrud } from '../Types/ITasks';
 
 @Injectable()
 export class TaskService implements TasksCrud {
-      private readonly db: IDatabase<any>;
-    
-        constructor(
-            @Inject('PG_CONNECTION') db: IDatabase<any>)
-            
-        {
-            this.db = db; 
-        }
+  private readonly db: IDatabase<any>;
+
+  constructor(
+    @Inject('PG_CONNECTION') db: IDatabase<any>) {
+    this.db = db;
+  }
 
   // Function to create a task
   async createTask(
@@ -34,7 +32,7 @@ export class TaskService implements TasksCrud {
         user_id,
         task.id,
       ]);
-      
+
       console.log(task)
       return 'Task created!';
     } catch (error) {
@@ -44,11 +42,20 @@ export class TaskService implements TasksCrud {
   }
 
   // Function to update task status to complete
-  async updateTask(title: string): Promise<string> {
+  async updateTask(id: number): Promise<string> {
     try {
-      // Set the status to true (completed)
-      await this.db.none(`UPDATE tasks SET status = true WHERE title = $1`, [title]);
-      return 'Task completed!';
+      // Get the current status
+      const current = await this.db.one(`SELECT status FROM tasks WHERE id = $1`, [id]);
+      if (current.status === false) {
+        // Set the status to true (completed)
+        await this.db.none(`UPDATE tasks SET status = true WHERE id = $1`, [id]);
+        return 'Task completed!';
+      } else {
+        // Set the status to false (incomplete) 
+        await this.db.none(`UPDATE tasks SET status = false WHERE id = $1`, [id]);
+        return 'Task marked incomplete!';
+      }
+
     } catch (error) {
       console.error('Error updating task:', error);
       return 'Error updating task';
@@ -58,8 +65,16 @@ export class TaskService implements TasksCrud {
   // Function to delete a task based on title
   async deleteTask(id: number): Promise<string> {
     try {
-      await this.db.none(`DELETE FROM tasks WHERE title = $1`, [id]);
-      return 'Task deleted!';
+      // Check if task exists
+      const taskExists = await this.db.oneOrNone(`SELECT * FROM tasks WHERE id = $1`, [id]);
+        console.log(taskExists)
+      if (!taskExists) {
+        return 'Task not found!';
+      }
+      // Delete the task
+      await this.db.none(`DELETE FROM tasks WHERE id = $1`, [taskExists.id]);
+      return 'Task deleted successfully!';
+
     } catch (error) {
       console.error('Error deleting task:', error);
       return 'Error deleting task';
